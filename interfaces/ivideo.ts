@@ -16,8 +16,6 @@ interface IThumbnailSize {
     height: number;
 }
 interface IThumbnail {
-    default: IThumbnailSize;
-    medium: IThumbnailSize;
     high: IThumbnailSize;
 }
 export interface IVideo {

@@ -4,17 +4,21 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import Banner from '@/components/banner'
 import NavBar from '@/components/navbar'
-import Card from '@/components/card'
 import { CardSize } from '@/enums/card-size'
 import SectionCard from '@/components/section-cards'
 import { IVideo } from '@/interfaces/ivideo'
 import { getVideos } from '@/services/video.service'
 
-
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
-  const disneyVideo = getVideos();
+export async function getServerSideProps() {
+  const disneyVideo = await getVideos();
+  return { props: { data: disneyVideo } }
+}
+interface IServerSideProps {
+  data: Array<IVideo>;
+}
+export default function Home(props: IServerSideProps) {
   return (
     <div>
       <Head>
@@ -30,8 +34,8 @@ export default function Home() {
         imageUrl='/images/socialnetworkimage.jpg'
       />
       <div className={styles.sectionWrapper}>
-        <SectionCard title='Disney' videos={disneyVideo as Array<IVideo>} size={CardSize.LARGE} />
-        <SectionCard title='Disney' videos={disneyVideo as Array<IVideo>} size={CardSize.SMALL} />
+        <SectionCard title='Disney' videos={props.data as Array<IVideo>} size={CardSize.LARGE} />
+        <SectionCard title='Disney' videos={props.data as Array<IVideo>} size={CardSize.SMALL} />
       </div>
     </div>
   )
