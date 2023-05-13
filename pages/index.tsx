@@ -7,16 +7,20 @@ import NavBar from '@/components/navbar'
 import { CardSize } from '@/enums/card-size'
 import SectionCard from '@/components/section-cards'
 import { IVideo } from '@/interfaces/ivideo'
-import { getVideos } from '@/services/video.service'
-
-const inter = Inter({ subsets: ['latin'] })
+import { getPopularVideos, getVideos } from '@/services/video.service'
 
 export async function getServerSideProps() {
-  const disneyVideo = await getVideos();
-  return { props: { data: disneyVideo } }
+  const disneyVideos = await getVideos("disney trailers");
+  const productivityVideos = await getVideos("productivity");
+  const travelVideos = await getVideos("travel");
+  const popularVideos = await getPopularVideos();
+  return { props: { disneyVideos, productivityVideos, travelVideos, popularVideos } }
 }
 interface IServerSideProps {
-  data: Array<IVideo>;
+  disneyVideos: Array<IVideo>;
+  productivityVideos: Array<IVideo>;
+  travelVideos: Array<IVideo>;
+  popularVideos: Array<IVideo>;
 }
 export default function Home(props: IServerSideProps) {
   return (
@@ -27,15 +31,19 @@ export default function Home(props: IServerSideProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NavBar username='meleazar18' />
-      <Banner
-        title='Social Network'
-        subtitle='the creation of facebook by Mark Zuckemberg'
-        imageUrl='/images/socialnetworkimage.jpg'
-      />
-      <div className={styles.sectionWrapper}>
-        <SectionCard title='Disney' videos={props.data as Array<IVideo>} size={CardSize.LARGE} />
-        <SectionCard title='Disney' videos={props.data as Array<IVideo>} size={CardSize.SMALL} />
+      <div className={styles.main}>
+        <NavBar username='meleazar18' />
+        <Banner
+          title='Social Network'
+          subtitle='the creation of facebook by Mark Zuckemberg'
+          imageUrl='/images/socialnetworkimage.jpg'
+        />
+        <div className={styles.sectionWrapper}>
+          <SectionCard title='Disney' videos={props.disneyVideos as Array<IVideo>} size={CardSize.LARGE} />
+          <SectionCard title='Travel' videos={props.travelVideos as Array<IVideo>} size={CardSize.SMALL} />
+          <SectionCard title='Productivity' videos={props.productivityVideos as Array<IVideo>} size={CardSize.MEDIUM} />
+          <SectionCard title='Populars' videos={props.popularVideos as Array<IVideo>} size={CardSize.SMALL} />
+        </div>
       </div>
     </div>
   )
