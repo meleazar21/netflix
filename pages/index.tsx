@@ -37,6 +37,7 @@ export default function Home(props: IServerSideProps) {
           title='Social Network'
           subtitle='the creation of facebook by Mark Zuckemberg'
           imageUrl='/images/socialnetworkimage.jpg'
+          videoId='mele123'
         />
         <div className={styles.sectionWrapper}>
           <SectionCard title='Disney' videos={props.disneyVideos as Array<IVideo>} size={CardSize.LARGE} />

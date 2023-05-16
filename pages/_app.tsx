@@ -7,17 +7,18 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
-    const checkIsLoggedIn = async () => {
-      setLoading(true);
-      const isLoggedIn = await isUserLogin();
-      if (isLoggedIn) router.push(Paths.HOME);
-      else router.push(Paths.LOGIN);
-    }
-    checkIsLoggedIn();
+    /* const checkIsLoggedIn = async () => {
+       setLoading(true);
+       const isLoggedIn = await isUserLogin();
+       if (isLoggedIn) router.push(Paths.HOME);
+       else router.push(Paths.LOGIN);
+     }
+     */
+    //checkIsLoggedIn();
     const handleComplete = () => {
       setLoading(false);
     }

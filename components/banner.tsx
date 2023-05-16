@@ -1,15 +1,19 @@
 import Image from 'next/image';
 import styles from '../styles/banner.module.css'
+import { useRouter } from 'next/router';
+import { Paths } from '@/constants/path';
 
 interface IBanner {
     imageUrl: string;
     title: string;
     subtitle: string;
+    videoId: string;
 }
 const Banner = (props: IBanner) => {
+    const router = useRouter();
 
     const handleClick = () => {
-
+        router.push(`${Paths.VIDEO}/${props.videoId}`)
     }
     return (
         <div className={styles.container}>
