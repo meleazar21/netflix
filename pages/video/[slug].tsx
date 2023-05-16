@@ -18,9 +18,9 @@ const video = () => {
                 className={styles.modal}
                 overlayClassName={styles.overlay}
             >
-                <iframe className={styles.videoPlayer} id="ytplayer" type="text/html" width="100%" height="360"
+                <iframe className={styles.videoPlayer} id="ytplayer" data-type="text/html" width="100%" height="360"
                     src={`https://www.youtube.com/embed/${slug}?controls=0&rel=0&autoplay=1&origin=http://example.com`}
-                    frameborder="0"></iframe>
+                    data-frameborder="0"></iframe>
                 <div className={styles.modalBody}>
                     <div className={styles.modalBodyContent}>
                         <div className={styles.col1}>
