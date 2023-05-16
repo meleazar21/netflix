@@ -32,7 +32,7 @@ export default function Home(props: IServerSideProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.main}>
-        <NavBar username='meleazar18' />
+        <NavBar />
         <Banner
           title='Social Network'
           subtitle='the creation of facebook by Mark Zuckemberg'

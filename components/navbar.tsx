@@ -2,15 +2,24 @@ import Image from 'next/image';
 import styles from '../styles/navbar.module.css';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { magic } from '@/lib/magic-client';
+import { getUserEmail, logout } from '@/services/magicLink.service';
+import { Paths } from '@/constants/path';
 
-interface INavBar {
-    username: string;
-}
-
-const NavBar = (props: INavBar) => {
+const NavBar = () => {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
+    const [username, setUsername] = useState<string>("");
+
     const router = useRouter();
+
+    useEffect(() => {
+        const getUserEmailAddress = async () => {
+            const email = await getUserEmail();
+            if (email) setUsername(email);
+        }
+        getUserEmailAddress();
+    }, [])
 
     const handleClickHome = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -24,6 +33,11 @@ const NavBar = (props: INavBar) => {
 
     const handleShowDropdown = () => {
         setShowDropdown(!showDropdown);
+    }
+
+    const handleLogOut = async () => {
+        const isLoggedOut = await logout();
+        if (isLoggedOut) router.push(Paths.LOGIN);
     }
 
     return (
@@ -41,13 +55,13 @@ const NavBar = (props: INavBar) => {
                 <nav className={styles.navContainer}>
                     <div>
                         <button className={styles.usernameBtn} onClick={handleShowDropdown}>
-                            <p className={styles.username}>{props.username}</p>
+                            <p className={styles.username}>{username}</p>
                             <Image src="/images/expand.svg" alt='expand_icon' width={24} height={24} />
                             {/**Expand more icon */}
                         </button>
                         {showDropdown && <div className={styles.navDropdown}>
                             <div>
-                                <Link href="/login" className={styles.linkName}>Sign out</Link>
+                                <span onClick={handleLogOut} className={styles.linkName}>Sign out</span>
                                 <div className={styles.lineWrapper}></div>
                             </div>
                         </div>}
