@@ -1,12 +1,12 @@
 import { CardSize } from "@/enums/card-size";
 import Card from "./card";
 import styles from "../styles/section-cards.module.css";
-import { IVideo } from "@/interfaces/ivideo";
+import { IVideoResponse } from "@/interfaces/ivideoResponse";
 import Link from "next/link";
 
 interface ISectionCard {
     title: string;
-    videos: Array<IVideo>;
+    videos: Array<IVideoResponse>;
     size: CardSize
 }
 
@@ -15,7 +15,7 @@ const SectionCards = (props: ISectionCard) => {
         <section className={styles.container}>
             <h2 className={styles.title}>{props.title}</h2>
             <div className={styles.cardWrapper}>
-                {props.videos.map((video: IVideo, index: number) => {
+                {props.videos.map((video: IVideoResponse, index: number) => {
                     return (
                         <Link href={`/video/${video.id.videoId ? video.id.videoId : video.id}`} key={index}>
                             <Card

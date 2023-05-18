@@ -6,9 +6,10 @@
     margin: 0 auto;
 
     width: 800px;
+    height: 85%;
     bottom: 40px;
     background-color: var(--black40);
-    top: 5%;
+    top: 10%;
 
     outline: none;
     border-radius: 10px;
@@ -54,7 +55,7 @@
 }
 
 .col1 {
-    max-height: 15rem
+    max-height: 12rem
         /* 208px */
     ;
     overflow-y: hidden;
@@ -131,8 +132,10 @@
     margin: 0px;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 1024px) {
     .modal {
-        width: 100%;
+        top: 10%;
+        bottom: 40px;
+        width: 50%;
     }
 }

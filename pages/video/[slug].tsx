@@ -1,16 +1,54 @@
-import { useRouter } from "next/router";
 import Modal from 'react-modal';
 import styles from '../../styles/video.module.css';
 import cls from 'classnames'
+import { IVideo } from "@/interfaces/ivideo";
+import { getVideoById } from "@/services/video.service";
+import { IParam } from "@/interfaces/iparam";
+import { GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
+import NavBar from '@/components/navbar';
 
 Modal.setAppElement("#__next");
 
-const video = () => {
+export const getStaticProps: GetStaticProps = async (context) => {
+    const params = context.params as IParam;
+    const videoById = await getVideoById(params.slug);
+    const video: IVideo = {
+        channelTitle: videoById[0]?.snippet.channelTitle,
+        title: videoById[0]?.snippet.title,
+        description: videoById[0]?.snippet.description,
+        publishTime: videoById[0]?.snippet.publishedAt,
+        viewCount: videoById[0]?.statistics?.viewCount ?? 0
+    };
+    return {
+        props: {
+            video,
+        },
+        revalidate: 10, // In seconds
+    };
+}
+
+export async function getStaticPaths() {
+    const listOfVideos = ["lB95KLmpLR4", "9GgxinPwAGc", "8BFdFeOS3oM"];
+
+    const paths = listOfVideos.map((slug) => ({
+        params: { slug },
+    }));
+
+    return { paths, fallback: 'blocking' };
+}
+
+interface IGetStaticProps {
+    video: IVideo;
+}
+
+const video = (props: IGetStaticProps) => {
     const router = useRouter();
     const { slug } = router.query;
 
     return (
         <div className={styles.container}>
+            <NavBar />
             <Modal
                 isOpen={true}
                 contentLabel="Watch the video"
@@ -25,24 +63,19 @@ const video = () => {
                     <div className={styles.modalBodyContent}>
                         <div className={styles.col1}>
                             <p className={styles.publishTime}>{new Date().toLocaleDateString()}</p>
-                            <h2 className={styles.title}>Peter Pan Movie 2023</h2>
+                            <h2 className={styles.title}>{props.video.title}</h2>
                             <p className={styles.description}>
-                                Follow the adventures of Peter Pan, a boy who does not want to grow up, and how he recruits three siblings in London, and together they embark on a magical adventure on the enchanted island .
-                                Follow the adventures of Peter Pan, a boy who does not want to grow up, and how he recruits three siblings in London, and together they embark on a magical adventure on the enchanted island .
-                                Follow the adventures of Peter Pan, a boy who does not want to grow up, and how he recruits three siblings in London, and together they embark on a magical adventure on the enchanted island .
-                                Follow the adventures of Peter Pan, a boy who does not want to grow up, and how he recruits three siblings in London, and together they embark on a magical adventure on the enchanted island .
-                                Follow the adventures of Peter Pan, a boy who does not want to grow up, and how he recruits three siblings in London, and together they embark on a magical adventure on the enchanted island .
-                                Follow the adventures of Peter Pan, a boy who does not want to grow up, and how he recruits three siblings in London, and together they embark on a magical adventure on the enchanted island .
+                                {props.video.description}
                             </p>
                         </div>
                         <div className={styles.col2}>
                             <p className={cls(styles.subText, styles.subTextWrapper)}>
                                 <span className={styles.textColor}>Cast: </span>
-                                <span className={styles.channelTitle}>Netflix</span>
+                                <span className={styles.channelTitle}>{props.video.channelTitle}</span>
                             </p>
                             <p className={cls(styles.subText, styles.subTextWrapper)}>
                                 <span className={styles.textColor}>View Count: </span>
-                                <span className={styles.channelTitle}>1000</span>
+                                <span className={styles.channelTitle}>{props.video?.viewCount}</span>
                             </p>
                         </div>
                     </div>

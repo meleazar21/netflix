@@ -11,14 +11,14 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   useEffect(() => {
-    /* const checkIsLoggedIn = async () => {
-       setLoading(true);
-       const isLoggedIn = await isUserLogin();
-       if (isLoggedIn) router.push(Paths.HOME);
-       else router.push(Paths.LOGIN);
-     }
-     */
-    //checkIsLoggedIn();
+    /*const checkIsLoggedIn = async () => {
+      setLoading(true);
+      const isLoggedIn = await isUserLogin();
+      if (isLoggedIn) router.push(Paths.HOME);
+      else router.push(Paths.LOGIN);
+    }
+
+    checkIsLoggedIn();*/
     const handleComplete = () => {
       setLoading(false);
     }

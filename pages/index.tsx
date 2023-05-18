@@ -6,23 +6,26 @@ import Banner from '@/components/banner'
 import NavBar from '@/components/navbar'
 import { CardSize } from '@/enums/card-size'
 import SectionCard from '@/components/section-cards'
-import { IVideo } from '@/interfaces/ivideo'
+import { IVideoResponse } from '@/interfaces/ivideoResponse'
 import { getPopularVideos, getVideos } from '@/services/video.service'
+import { startFetchMyQuery } from '@/services/hasura.service'
 
 export async function getServerSideProps() {
   const disneyVideos = await getVideos("disney trailers");
-  const productivityVideos = await getVideos("productivity");
-  const travelVideos = await getVideos("travel");
+  const productivityVideos = await getVideos("day in life of software engineer meta");
+  const travelVideos = await getVideos("netflix trailers");
   const popularVideos = await getPopularVideos();
   return { props: { disneyVideos, productivityVideos, travelVideos, popularVideos } }
 }
 interface IServerSideProps {
-  disneyVideos: Array<IVideo>;
-  productivityVideos: Array<IVideo>;
-  travelVideos: Array<IVideo>;
-  popularVideos: Array<IVideo>;
+  disneyVideos: Array<IVideoResponse>;
+  productivityVideos: Array<IVideoResponse>;
+  travelVideos: Array<IVideoResponse>;
+  popularVideos: Array<IVideoResponse>;
 }
 export default function Home(props: IServerSideProps) {
+  startFetchMyQuery();
+
   return (
     <div>
       <Head>
@@ -37,13 +40,13 @@ export default function Home(props: IServerSideProps) {
           title='Social Network'
           subtitle='the creation of facebook by Mark Zuckemberg'
           imageUrl='/images/socialnetworkimage.jpg'
-          videoId='mele123'
+          videoId='lB95KLmpLR4'
         />
         <div className={styles.sectionWrapper}>
-          <SectionCard title='Disney' videos={props.disneyVideos as Array<IVideo>} size={CardSize.LARGE} />
-          <SectionCard title='Travel' videos={props.travelVideos as Array<IVideo>} size={CardSize.SMALL} />
-          <SectionCard title='Productivity' videos={props.productivityVideos as Array<IVideo>} size={CardSize.MEDIUM} />
-          <SectionCard title='Populars' videos={props.popularVideos as Array<IVideo>} size={CardSize.SMALL} />
+          <SectionCard title='Disney' videos={props.disneyVideos as Array<IVideoResponse>} size={CardSize.LARGE} />
+          <SectionCard title='Travel' videos={props.travelVideos as Array<IVideoResponse>} size={CardSize.SMALL} />
+          <SectionCard title='Productivity' videos={props.productivityVideos as Array<IVideoResponse>} size={CardSize.MEDIUM} />
+          <SectionCard title='Populars' videos={props.popularVideos as Array<IVideoResponse>} size={CardSize.SMALL} />
         </div>
       </div>
     </div>

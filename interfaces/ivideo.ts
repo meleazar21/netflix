@@ -1,24 +1,7 @@
-import { CardSize } from "@/enums/card-size";
-
-interface IId {
-    kind: string;
-    videoId: string;
-}
-interface ISnippet {
-    publishedAt: string;
+export interface IVideo {
     title: string;
     description: string;
-    thumbnails: IThumbnail
-}
-interface IThumbnailSize {
-    url: string;
-    width: number;
-    height: number;
-}
-interface IThumbnail {
-    high: IThumbnailSize;
-}
-export interface IVideo {
-    id: IId;
-    snippet: ISnippet;
+    publishTime: string;
+    channelTitle: string;
+    viewCount: number;
 }
