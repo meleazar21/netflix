@@ -1,15 +1,11 @@
-/*
-This is an example snippet - you should consider tailoring it
-to your service.
-*/
+import { HASURA_ADMIN_URL, HASURA_KEY } from "@/constants/commonStrings";
 
-async function fetchGraphQL(operationsDoc: string, operationName: string, variables: {}) {
-    const result = await fetch(
-        "https://legal-spider-90.hasura.app/v1/graphql",
+async function queryHasuraGraphQL(operationsDoc: string, operationName: string, variables: {}) {
+    const result = await fetch(HASURA_ADMIN_URL,
         {
             method: "POST",
             headers: {
-                'x-hasura-admin-secret': 'wWtT2cBKuNteh0YIXrSoM1XsFk4NQUokYG128uq7tSTe7wwjOVGh492QuWkMvVj0'
+                'x-hasura-admin-secret': `${HASURA_KEY}`
             },
             body: JSON.stringify({
                 query: operationsDoc,
@@ -22,7 +18,8 @@ async function fetchGraphQL(operationsDoc: string, operationName: string, variab
     return await result.json();
 }
 
-const operationsDoc = `
+function fetchMyQuery() {
+    const operationsDoc = `
     query MyQuery {
       users {
         email
@@ -32,9 +29,7 @@ const operationsDoc = `
       }
     }
   `;
-
-function fetchMyQuery() {
-    return fetchGraphQL(
+    return queryHasuraGraphQL(
         operationsDoc,
         "MyQuery",
         {}
