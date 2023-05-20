@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import Banner from '@/components/banner'
 import NavBar from '@/components/navbar'
@@ -8,7 +7,6 @@ import { CardSize } from '@/enums/card-size'
 import SectionCard from '@/components/section-cards'
 import { IVideoResponse } from '@/interfaces/ivideoResponse'
 import { getPopularVideos, getVideos } from '@/services/video.service'
-import { startFetchMyQuery } from '@/services/hasura.service'
 
 export async function getServerSideProps() {
   const disneyVideos = await getVideos("disney trailers");
@@ -24,7 +22,6 @@ interface IServerSideProps {
   popularVideos: Array<IVideoResponse>;
 }
 export default function Home(props: IServerSideProps) {
-  startFetchMyQuery();
 
   return (
     <div>

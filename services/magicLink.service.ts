@@ -16,6 +16,8 @@ export const getUserEmail = async () => {
     try {
         if (magic) {
             const { email } = await magic.user.getInfo();
+            const token = await magic.user.getIdToken();
+            console.log(token);
             return email;
         }
     } catch (error) {

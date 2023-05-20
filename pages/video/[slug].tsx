@@ -7,6 +7,8 @@ import { IParam } from "@/interfaces/iparam";
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import NavBar from '@/components/navbar';
+import Like from '@/components/icons/like-icon';
+import DisLike from '@/components/icons/dislike-icon';
 
 Modal.setAppElement("#__next");
 
@@ -59,6 +61,18 @@ const video = (props: IGetStaticProps) => {
                 <iframe className={styles.videoPlayer} id="ytplayer" data-type="text/html" width="100%" height="360"
                     src={`https://www.youtube.com/embed/${slug}?controls=0&rel=0&autoplay=1&origin=http://example.com`}
                     data-frameborder="0"></iframe>
+                <div className={styles.likeDislikeBtnWrapper}>
+                    <div className={styles.btnWrapper}>
+                        <button>
+                            <Like fill='none' selected={false} />
+                        </button>
+                    </div>
+                    <div className={styles.btnWrapper}>
+                        <button>
+                            <DisLike fill='none' selected={false} />
+                        </button>
+                    </div>
+                </div>
                 <div className={styles.modalBody}>
                     <div className={styles.modalBodyContent}>
                         <div className={styles.col1}>

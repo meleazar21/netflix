@@ -27,12 +27,28 @@ const Login = () => {
     }, [])
 
     const handleLoginWithEmail = async () => {
-        if (email && email.trim() === 'eleazarg2112@gmail.com') {
+        if (email) {
             setLoading(true);
             const idToken = await loginUser(email);
             if (!idToken) return;
-            rout.push(Paths.HOME);
+
+            const response = await fetch('/api/login', {
+                method: "POST",
+                headers: {
+                    'authorization': `Bearer ${idToken}`,
+                    'content-type': 'application/json'
+                }
+            });
+            const loggedInResponse = await response.json();
+            if (loggedInResponse.done) {
+                console.log({ loggedInResponse });
+                rout.push(Paths.HOME);
+            } else {
+                setLoading(false);
+                setUserMsg("Something went wrong while trying to login");
+            }
         } else {
+            setLoading(false);
             setUserMsg("Enter a valid email address!");
         }
     }

@@ -3,3 +3,7 @@ export const MAGIC_LINK_KEY = process.env.NEXT_PUBLIC_MAGIC_LINK_KEY ?? "";
 export const IS_DEVELOPMENT = process.env.NEXT_PUBLIC_IS_DEVELOPMENT ?? true;
 export const HASURA_KEY = process.env.NEXT_PUBLIC_HASURA_KEY ?? "";
 export const HASURA_ADMIN_URL = process.env.NEXT_PUBLIC_HASURA_ADMIN_URL ?? "";
+export const MAGIC_SERVER_KEY = process.env.NEXT_PUBLIC_MAGIC_SERVER_KEY ?? "";
+export const HASURA_ADMIN_SECRET = process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET ?? "";
+export const JWT_SECRET = process.env.NEX_PUBLIC_JWT_SECRET ?? "";
+export const MAX_AGE_COOKIE = process.env.NEXT_PUBLIC_MAX_AGE_COOKIE ?? "7";
