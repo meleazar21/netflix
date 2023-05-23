@@ -1,6 +1,7 @@
 import { IVideoResponse } from "@/interfaces/ivideoResponse";
 import { IS_DEVELOPMENT, YOUTUBE_API_KEY } from "@/constants/commonStrings";
 import videos from "../data/videos.json";
+import { getWatchedStats } from "@/lib/stats";
 
 const fetchVideos = async (url: string) => {
     const baseUrl = 'https://youtube.googleapis.com/youtube/v3';
@@ -35,4 +36,18 @@ export const getPopularVideos = () => {
 export const getVideoById = (videoId: string) => {
     const url = `videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}`;
     return getCommonVideos(url);
+}
+
+export const getWatchedAgainVideos = async (userId: string, token: string) => {
+    const videos = await getWatchedStats(userId, token);
+    const watchedVideos = videos.data.stats.map((video: any) => {
+        const newWatchedVideo: IVideoResponse = {
+            id: video.videoId,
+            snippet: null,
+            statistics: null,
+        }
+        return newWatchedVideo;
+    }) as Array<IVideoResponse>;
+    console.log({ watchedVideos });
+    return watchedVideos;
 }

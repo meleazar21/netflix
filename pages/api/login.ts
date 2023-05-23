@@ -1,9 +1,9 @@
 import { magicAdmin } from "../../lib/magic";
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
-import { isNewUser, createNewUser } from "@/services/hasura.service";
 import { JWT_SECRET } from "@/constants/commonStrings";
 import { setTokenCookie } from "@/lib/cookies";
+import { createNewUser, isNewUser } from "@/lib/user";
 
 const login = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === "POST") {

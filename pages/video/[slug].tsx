@@ -3,12 +3,16 @@ import styles from '../../styles/video.module.css';
 import cls from 'classnames'
 import { IVideo } from "@/interfaces/ivideo";
 import { getVideoById } from "@/services/video.service";
-import { IParam } from "@/interfaces/iparam";
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import NavBar from '@/components/navbar';
 import Like from '@/components/icons/like-icon';
 import DisLike from '@/components/icons/dislike-icon';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { IParam } from '@/interfaces/iparam';
+import { statsService } from '@/services/stats.service';
+import { IVideoInput } from '@/interfaces/ivideo-input';
+import { Favourited } from '@/enums/favourited';
 
 Modal.setAppElement("#__next");
 
@@ -16,11 +20,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const params = context.params as IParam;
     const videoById = await getVideoById(params.slug);
     const video: IVideo = {
-        channelTitle: videoById[0]?.snippet.channelTitle,
-        title: videoById[0]?.snippet.title,
-        description: videoById[0]?.snippet.description,
-        publishTime: videoById[0]?.snippet.publishedAt,
-        viewCount: videoById[0]?.statistics?.viewCount ?? 0
+        channelTitle: videoById[0]?.snippet?.channelTitle ?? "",
+        title: videoById[0]?.snippet?.title ?? "",
+        description: videoById[0]?.snippet?.description ?? "",
+        publishTime: videoById[0]?.snippet?.publishedAt ?? "",
+        viewCount: videoById[0]?.statistics?.viewCount ?? 0,
     };
     return {
         props: {
@@ -45,8 +49,44 @@ interface IGetStaticProps {
 }
 
 const video = (props: IGetStaticProps) => {
+
+    const [toggles, setToggles] = useState({ like: false, dislike: false });
+
     const router = useRouter();
     const { slug } = router.query;
+
+    const runRatingService = async (favorited: Favourited) => {
+        const videoInput: IVideoInput = {
+            favourited: favorited,
+            videoId: slug as string,
+            watched: false,
+        };
+        const isLiked = favorited === Favourited.LIKED;
+        setToggles({ like: isLiked, dislike: !isLiked });
+        const result = await statsService.likeVideo(videoInput);
+        if (!result.success) setToggles({ like: !isLiked, dislike: isLiked });
+    }
+
+    const handleToggleLike = () => {
+        runRatingService(Favourited.LIKED);
+    }
+
+    const handleToggleDisLike = () => {
+        runRatingService(Favourited.DISLIKED);
+    }
+
+    const handleSuccess = (response: any) => {
+        console.log({ responseHandleSuccess: response });
+        const isLiked = response.obj.favourited === Favourited.LIKED;
+        setToggles({ like: isLiked, dislike: !isLiked });
+    }
+    const handleError = (error: any) => {
+        console.log(error);
+    }
+
+    useEffect(() => {
+        statsService.getVideoById(slug as string, handleSuccess, handleError);
+    }, [])
 
     return (
         <div className={styles.container}>
@@ -62,14 +102,18 @@ const video = (props: IGetStaticProps) => {
                     src={`https://www.youtube.com/embed/${slug}?controls=0&rel=0&autoplay=1&origin=http://example.com`}
                     data-frameborder="0"></iframe>
                 <div className={styles.likeDislikeBtnWrapper}>
-                    <div className={styles.btnWrapper}>
-                        <button>
-                            <Like fill='none' selected={false} />
+                    <div className={styles.likeBtnWrapper}>
+                        <button onClick={handleToggleLike}>
+                            <div className={styles.btnWrapper}>
+                                <Like fill='none' selected={toggles.like} />
+                            </div>
                         </button>
                     </div>
-                    <div className={styles.btnWrapper}>
-                        <button>
-                            <DisLike fill='none' selected={false} />
+                    <div className={styles.likeBtnWrapper}>
+                        <button onClick={handleToggleDisLike}>
+                            <div className={styles.btnWrapper}>
+                                <DisLike fill='none' selected={toggles.dislike} />
+                            </div>
                         </button>
                     </div>
                 </div>

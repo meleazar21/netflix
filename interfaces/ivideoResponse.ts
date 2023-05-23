@@ -25,6 +25,6 @@ interface IThumbnail {
 }
 export interface IVideoResponse {
     id: IId;
-    snippet: ISnippet;
-    statistics: IStatistics;
+    snippet?: ISnippet | null;
+    statistics?: IStatistics | null;
 }

@@ -20,7 +20,7 @@ const SectionCards = (props: ISectionCard) => {
                         <Link href={`/video/${video.id.videoId ? video.id.videoId : video.id}`} key={index}>
                             <Card
                                 id={video.id.videoId}
-                                imageUrl={video.snippet.thumbnails.high.url}
+                                imageUrl={video.snippet?.thumbnails?.high.url || `https://i.ytimg.com/vi/${video.id.videoId}/maxresdefault.jpg`}
                                 size={props.size}
                             />
                         </Link>

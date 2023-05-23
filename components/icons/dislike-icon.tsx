@@ -1,4 +1,4 @@
-import { ILikeDislike } from "@/interfaces/icons/iLikeDislike";
+import { ILikeDislike } from "@/interfaces/icons/ilikeDislike";
 
 const DisLike = ({ fill = "none", selected = false }: ILikeDislike) => (
     <svg

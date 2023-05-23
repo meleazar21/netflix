@@ -6,23 +6,25 @@ import NavBar from '@/components/navbar'
 import { CardSize } from '@/enums/card-size'
 import SectionCard from '@/components/section-cards'
 import { IVideoResponse } from '@/interfaces/ivideoResponse'
-import { getPopularVideos, getVideos } from '@/services/video.service'
+import { getPopularVideos, getVideos, getWatchedAgainVideos } from '@/services/video.service'
 
 export async function getServerSideProps() {
   const disneyVideos = await getVideos("disney trailers");
   const productivityVideos = await getVideos("day in life of software engineer meta");
   const travelVideos = await getVideos("netflix trailers");
   const popularVideos = await getPopularVideos();
-  return { props: { disneyVideos, productivityVideos, travelVideos, popularVideos } }
+  const watchedAgainVideos = await getWatchedAgainVideos("did:ethr:0x933864E1b948Cc7c4f47A2cbaaB8f29B26901c36", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3N1ZXIiOiJkaWQ6ZXRocjoweDkzMzg2NEUxYjk0OENjN2M0ZjQ3QTJjYmFhQjhmMjlCMjY5MDFjMzYiLCJwdWJsaWNBZGRyZXNzIjoiMHg5MzM4NjRFMWI5NDhDYzdjNGY0N0EyY2JhYUI4ZjI5QjI2OTAxYzM2IiwiZW1haWwiOiJlbGVhemFyZzIxMTJAZ21haWwuY29tIiwib2F1dGhQcm92aWRlciI6bnVsbCwicGhvbmVOdW1iZXIiOm51bGwsIndhbGxldHMiOltdLCJpYXQiOjE2ODQ2MjEwNTMsImV4cCI6MTAxODg1ODgxMjk3MTEyNiwiaHR0cHM6Ly9oYXN1cmEuaW8vand0L2NsYWltcyI6eyJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIiwieC1oYXN1cmEtYWxsb3dlZC1yb2xlcyI6WyJ1c2VyIiwiYWRtaW4iXSwieC1oYXN1cmEtdXNlci1pZCI6ImRpZDpldGhyOjB4OTMzODY0RTFiOTQ4Q2M3YzRmNDdBMmNiYWFCOGYyOUIyNjkwMWMzNiJ9fQ.lpci8eYRKekQXsxQjq-p4DbUtq2vYeMfRbG7MAdIX3M");
+
+  return { props: { disneyVideos, productivityVideos, travelVideos, popularVideos, watchedAgainVideos } }
 }
 interface IServerSideProps {
   disneyVideos: Array<IVideoResponse>;
   productivityVideos: Array<IVideoResponse>;
   travelVideos: Array<IVideoResponse>;
   popularVideos: Array<IVideoResponse>;
+  watchedAgainVideos: Array<IVideoResponse>
 }
 export default function Home(props: IServerSideProps) {
-
   return (
     <div>
       <Head>
@@ -41,6 +43,7 @@ export default function Home(props: IServerSideProps) {
         />
         <div className={styles.sectionWrapper}>
           <SectionCard title='Disney' videos={props.disneyVideos as Array<IVideoResponse>} size={CardSize.LARGE} />
+          <SectionCard title='Watched Again' videos={props.watchedAgainVideos} size={CardSize.SMALL} />
           <SectionCard title='Travel' videos={props.travelVideos as Array<IVideoResponse>} size={CardSize.SMALL} />
           <SectionCard title='Productivity' videos={props.productivityVideos as Array<IVideoResponse>} size={CardSize.MEDIUM} />
           <SectionCard title='Populars' videos={props.popularVideos as Array<IVideoResponse>} size={CardSize.SMALL} />

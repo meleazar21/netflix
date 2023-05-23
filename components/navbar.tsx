@@ -43,11 +43,11 @@ const NavBar = () => {
     return (
         <div className={styles.container}>
             <div className={styles.wrapper}>
-                <a className={styles.logoLink} href="/">
+                <Link className={styles.logoLink} href={Paths.HOME}>
                     <div className={styles.logoWrapper}>
                         <Image src="/images/netflix.svg" width={124} height={36} alt='picture of the author' />
                     </div>
-                </a>
+                </Link>
                 <ul className={styles.navItems}>
                     <li className={styles.navItem} onClick={handleClickHome}>Home</li>
                     <li className={styles.navItem} onClick={handleClickMyList}>My List</li>
