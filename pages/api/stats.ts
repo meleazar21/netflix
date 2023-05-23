@@ -5,12 +5,13 @@ import { IJwtPayloadCustom } from "@/interfaces/ijwt-payload-custom";
 import { createStats, findStatByUserVideoId, updateStates } from "@/lib/stats";
 import { TypeInsertVariables } from "@/interfaces/istats-variables";
 import { IServiceResponse } from "@/interfaces/iservice-response";
+import { verifyToken } from "@/lib/util";
 
 const stats = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!req.cookies.token) return res.status(403).send({ message: 'Unauthorized!' });
 
-    const { issuer } = await jwt.verify(req.cookies.token, JWT_SECRET) as IJwtPayloadCustom;
+    const issuer = await verifyToken(req.cookies.token) as string;
     let response: IServiceResponse = { success: true, obj: {} };
 
     if (req.method === 'POST') {

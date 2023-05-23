@@ -13,20 +13,24 @@ interface ISectionCard {
 const SectionCards = (props: ISectionCard) => {
     return (
         <section className={styles.container}>
-            <h2 className={styles.title}>{props.title}</h2>
-            <div className={styles.cardWrapper}>
-                {props.videos.map((video: IVideoResponse, index: number) => {
-                    return (
-                        <Link href={`/video/${video.id.videoId ? video.id.videoId : video.id}`} key={index}>
-                            <Card
-                                id={video.id.videoId}
-                                imageUrl={video.snippet?.thumbnails?.high.url || `https://i.ytimg.com/vi/${video.id.videoId}/maxresdefault.jpg`}
-                                size={props.size}
-                            />
-                        </Link>
-                    )
-                })}
-            </div>
+            {props.videos.length > 0 && (
+                <>
+                    <h2 className={styles.title}>{props.title}</h2>
+                    <div className={styles.cardWrapper}>
+                        {props.videos.map((video: IVideoResponse, index: number) => {
+                            return (
+                                <Link href={`/video/${video.id.videoId ? video.id.videoId : video.id}`} key={index}>
+                                    <Card
+                                        id={video.id.videoId}
+                                        imageUrl={video.snippet?.thumbnails?.high.url || `https://i.ytimg.com/vi/${video.id.videoId}/maxresdefault.jpg`}
+                                        size={props.size}
+                                    />
+                                </Link>
+                            )
+                        })}
+                    </div>
+                </>
+            )}
         </section>
     )
 }

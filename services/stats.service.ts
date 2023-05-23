@@ -1,4 +1,3 @@
-import { IServiceResponse } from "@/interfaces/iservice-response";
 import { IVideoInput } from "@/interfaces/ivideo-input";
 
 class StatsService {
