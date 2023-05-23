@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/login.module.css";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Paths } from "@/constants/path";
 import { magic } from "@/lib/magic-client";
@@ -41,7 +41,6 @@ const Login = () => {
             });
             const loggedInResponse = await response.json();
             if (loggedInResponse.done) {
-                console.log({ loggedInResponse });
                 rout.push(Paths.HOME);
             } else {
                 setLoading(false);
@@ -52,6 +51,10 @@ const Login = () => {
             setUserMsg("Enter a valid email address!");
         }
     }
+
+    const handleKeyDow = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') await handleLoginWithEmail();
+    };
 
     return (
         <div className={styles.container}>
@@ -77,6 +80,7 @@ const Login = () => {
                         type="text"
                         placeholder="email address"
                         onChange={(e: React.FormEvent<HTMLInputElement>) => setEmail(e.currentTarget.value)}
+                        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDow(e)}
                     />
                     <p className={styles.userMsg}>{userMsg}</p>
                     <button disabled={loading} className={styles.loginBtn} onClick={handleLoginWithEmail}>{loading ? "Loading..." : "Sign In"}</button>

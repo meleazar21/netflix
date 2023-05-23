@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import NavBar from '@/components/navbar';
 import Like from '@/components/icons/like-icon';
 import DisLike from '@/components/icons/dislike-icon';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IParam } from '@/interfaces/iparam';
 import { statsService } from '@/services/stats.service';
 import { IVideoInput } from '@/interfaces/ivideo-input';
@@ -59,7 +59,7 @@ const video = (props: IGetStaticProps) => {
         const videoInput: IVideoInput = {
             favourited: favorited,
             videoId: slug as string,
-            watched: false,
+            watched: true,
         };
         const isLiked = favorited === Favourited.LIKED;
         setToggles({ like: isLiked, dislike: !isLiked });
@@ -76,7 +76,6 @@ const video = (props: IGetStaticProps) => {
     }
 
     const handleSuccess = (response: any) => {
-        console.log({ responseHandleSuccess: response });
         const isLiked = response.obj.favourited === Favourited.LIKED;
         setToggles({ like: isLiked, dislike: !isLiked });
     }

@@ -24,7 +24,6 @@ export async function getServerSideProps(context: IContext) {
         }
     }
     const myVideoList = await statsService.getLikedVideos(userId, token);
-    console.log({ myVideoList });
     return { props: { myVideoList } };
 }
 

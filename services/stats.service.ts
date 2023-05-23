@@ -19,9 +19,9 @@ class StatsService {
             return error;
         }
     }
-    getVideoById(videoId: string, onSuccess: Function, onError: Function) {
+    async getVideoById(videoId: string, onSuccess: Function, onError: Function) {
         try {
-            fetch(`/api/stats?videoId=${videoId}`, {
+            await fetch(`/api/stats?videoId=${videoId}`, {
                 method: "GET",
                 headers: {
                     "Content-type": "application/json"
