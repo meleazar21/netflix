@@ -1,10 +1,9 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/login.module.css";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Paths } from "@/constants/path";
-import { magic } from "@/lib/magic-client";
 import { loginUser } from "@/services/magicLink.service";
 
 const Login = () => {
