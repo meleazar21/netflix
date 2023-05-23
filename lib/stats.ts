@@ -58,3 +58,18 @@ export const getWatchedStats = async (userId: string, token: string) => {
   const response = queryHasuraGraphQL(operationsDoc, "getWatchedStats", { userId }, token);
   return response;
 }
+
+export const getLikedVideos = async (userId: string, token: string) => {
+
+  const operationsDoc = `
+  query getLikedVideos($userId: String!) {
+    stats(where: {userId: {_eq: $userId}, favourited: {_eq: 1}}) {
+      id
+      userId
+      videoId
+    }
+  }
+`;
+  const response = queryHasuraGraphQL(operationsDoc, "getLikedVideos", { userId }, token);
+  return response;
+}

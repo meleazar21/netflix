@@ -1,4 +1,6 @@
 import { IVideoInput } from "@/interfaces/ivideo-input";
+import { IVideoResponse } from "@/interfaces/ivideoResponse";
+import { getLikedVideos } from "@/lib/stats";
 
 class StatsService {
 
@@ -29,9 +31,25 @@ class StatsService {
                 onSuccess(data);
             });
         } catch (error) {
-            console.log({ entroCatch: error });
+            console.log({ error });
             onError(error);
         }
+    }
+
+    async getLikedVideos(userId: string, token: string) {
+        const videos = await getLikedVideos(userId, token);
+        const likedVideos = videos.data.stats.map((video: any) => {
+            const newLikedVideo: IVideoResponse = {
+                id: {
+                    kind: video.videoId,
+                    videoId: video.videoId
+                },
+                snippet: null,
+                statistics: null
+            }
+            return newLikedVideo
+        }) as Array<IVideoResponse>;
+        return likedVideos;
     }
 
 }

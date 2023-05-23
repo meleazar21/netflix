@@ -16,9 +16,19 @@ export const getUserEmail = async () => {
     try {
         if (magic) {
             const { email } = await magic.user.getInfo();
-            const token = await magic.user.getIdToken();
-            console.log(token);
             return email;
+        }
+    } catch (error) {
+        console.log("error retrieving email", error);
+        return "";
+    }
+}
+
+export const getDidToken = async () => {
+    try {
+        if (magic) {
+            const token = await magic.user.getIdToken();
+            return token;
         }
     } catch (error) {
         console.log("error retrieving email", error);

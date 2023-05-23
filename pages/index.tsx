@@ -9,6 +9,7 @@ import { IVideoResponse } from '@/interfaces/ivideoResponse'
 import { getPopularVideos, getVideos, getWatchedAgainVideos } from '@/services/video.service'
 import { NextApiRequest } from 'next'
 import useRedirectrUser from '@/utils/redirectUser'
+import { Paths } from '@/constants/path'
 
 interface IContext {
   req: NextApiRequest;
@@ -16,6 +17,14 @@ interface IContext {
 export async function getServerSideProps(context: IContext) {
   const { token, userId } = await useRedirectrUser(context);
 
+  if (!userId) {
+    return {
+      redirect: {
+        destination: Paths.LOGIN,
+        permanent: false,
+      }
+    }
+  }
   const disneyVideos = await getVideos("disney trailers");
   const productivityVideos = await getVideos("day in life of software engineer meta");
   const travelVideos = await getVideos("netflix trailers");

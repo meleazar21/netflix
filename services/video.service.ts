@@ -43,11 +43,22 @@ export const getWatchedAgainVideos = async (userId: string, token: string) => {
     const watchedVideos = videos.data.stats.map((video: any) => {
         const newWatchedVideo: IVideoResponse = {
             id: video.videoId,
-            snippet: null,
+            snippet: {
+                thumbnails: {
+                    high: {
+                        url: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`,
+                        height: 300,
+                        width: 300,
+                    }
+                },
+                publishedAt: "",
+                channelTitle: "",
+                description: "",
+                title: ""
+            },
             statistics: null,
         }
         return newWatchedVideo;
     }) as Array<IVideoResponse>;
-    console.log({ watchedVideos });
     return watchedVideos;
 }

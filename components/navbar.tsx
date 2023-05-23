@@ -4,11 +4,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { magic } from '@/lib/magic-client';
-import { getUserEmail, logout } from '@/services/magicLink.service';
+import { getDidToken, getUserEmail, logout } from '@/services/magicLink.service';
 import { Paths } from '@/constants/path';
 
 const NavBar = () => {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
+    const [didToken, setDidToken] = useState("");
     const [username, setUsername] = useState<string>("");
 
     const router = useRouter();
@@ -16,7 +17,9 @@ const NavBar = () => {
     useEffect(() => {
         const getUserEmailAddress = async () => {
             const email = await getUserEmail();
-            if (email) setUsername(email);
+            const token = await getDidToken();
+            if (email) setUsername(email)
+            if (didToken) setDidToken(token as string);
         }
         getUserEmailAddress();
     }, [])
@@ -35,10 +38,22 @@ const NavBar = () => {
         setShowDropdown(!showDropdown);
     }
 
-    const handleLogOut = async () => {
-        const isLoggedOut = await logout();
-        if (isLoggedOut) router.push(Paths.LOGIN);
-    }
+    const handleSignout = async () => {
+        try {
+            const response = await fetch("/api/logout", {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${didToken}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            await response.json();
+        } catch (error) {
+            console.error("Error logging out", error);
+            router.push(Paths.LOGIN);
+        }
+    };
 
     return (
         <div className={styles.container}>
@@ -61,7 +76,7 @@ const NavBar = () => {
                         </button>
                         {showDropdown && <div className={styles.navDropdown}>
                             <div>
-                                <span onClick={handleLogOut} className={styles.linkName}>Sign out</span>
+                                <span onClick={handleSignout} className={styles.linkName}>Sign out</span>
                                 <div className={styles.lineWrapper}></div>
                             </div>
                         </div>}
