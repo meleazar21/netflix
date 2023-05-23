@@ -1,4 +1,4 @@
-import { ILikeDislike } from "@/interfaces/icons/ilikeDislike";
+import { ILikeDislike } from "../../interfaces/icons/iLikeDislike";
 
 
 const Like = ({ fill = "white", selected = false }: ILikeDislike) => (
